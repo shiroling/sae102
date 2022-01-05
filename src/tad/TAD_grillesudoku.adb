@@ -8,9 +8,10 @@ package body TAD_grilleSudoku is
    function construireGrille return Type_Grille is
    g : Type_Grille;
    begin
-      grille :=  ((others=>0),(others=>0),(others=>0),
+      g :=  ((others=>0),(others=>0),(others=>0),
                   (others=>0),(others=>0),(others=>0),
                   (others=>0),(others=>0),(others=>0));
+      return g;
    end construireGrille;
 
    --------------
@@ -105,8 +106,9 @@ package body TAD_grilleSudoku is
                                        return Type_Ensemble is
    begin
       for i in 1 .. 9 loop
-         if g(numLigne, i) = 
-         
+         if g(numLigne, i) /= 0 then
+            ajouterChiffre(g(numLigne, i);
+         end if;
       end loop;
    end obtenirChiffresDUneLigne;
 
@@ -115,29 +117,30 @@ package body TAD_grilleSudoku is
    --------------------------------
 
    function obtenirChiffresDUneColonne
-     (g : in Type_Grille; numColonne : in Integer) return Type_Ensemble
-   is
-   begin
-      pragma Compile_Time_Warning
-        (Standard.True, "obtenirChiffresDUneColonne unimplemented");
-      return
-        raise Program_Error
-          with "Unimplemented function obtenirChiffresDUneColonne";
-   end obtenirChiffresDUneColonne;
+     (g : in Type_Grille; numColonne : in Integer) return Type_Ensemble is
+      begin
+         for i in 1 .. 9 loop
+            if g(i, numLigne) /= 0 then
+               ajouterChiffre(g(i, numLigne);
+            end if;
+         end loop;
+      end obtenirChiffresDUneColonne;
 
    -----------------------------
    -- obtenirChiffresDUnCarre --
    -----------------------------
 
-   function obtenirChiffresDUnCarre
-     (g : in Type_Grille; numCarre : in Integer) return Type_Ensemble
-   is
+   function obtenirChiffresDUnCarre (g : in Type_Grille; numCarre : in Integer) return Type_Ensemble is
+      cord: Type_Coordonnee;
+   
    begin
-      pragma Compile_Time_Warning
-        (Standard.True, "obtenirChiffresDUnCarre unimplemented");
-      return
-        raise Program_Error
-          with "Unimplemented function obtenirChiffresDUnCarre";
+      cord := obtenirCoordonneeCarre(numCarre);
+      for i in 0 .. 2 loop
+         for j in 0 .. 0 loop
+            if g(i + cord.linge, j +) /= 0 then
+               ajouterChiffre(g(i, numLigne);
+         end loop;
+      end loop;
    end obtenirChiffresDUnCarre;
 
 end TAD_grilleSudoku;
