@@ -6,36 +6,38 @@ package body TAD_grilleSudoku is
    ----------------------
 
    function construireGrille return Type_Grille is
+   g : Type_Grille;
    begin
-      pragma Compile_Time_Warning
-        (Standard.True, "construireGrille unimplemented");
-      return
-        raise Program_Error with "Unimplemented function construireGrille";
+      grille :=  ((others=>0),(others=>0),(others=>0),
+                  (others=>0),(others=>0),(others=>0),
+                  (others=>0),(others=>0),(others=>0));
    end construireGrille;
 
    --------------
    -- caseVide --
    --------------
 
-   function caseVide
-     (g : in Type_Grille; c : in Type_Coordonnee) return Boolean
-   is
+   function caseVide (g : in Type_Grille; c : in Type_Coordonnee) 
+                        return Boolean is
    begin
-      pragma Compile_Time_Warning (Standard.True, "caseVide unimplemented");
-      return raise Program_Error with "Unimplemented function caseVide";
+      if g(obtenirLigne(c),obtenirColonne(c))=0 then
+         return true;
+      else
+         return flase;
    end caseVide;
 
    --------------------
    -- obtenirChiffre --
    --------------------
 
-   function obtenirChiffre
-     (g : in Type_Grille; c : in Type_Coordonnee) return Integer
-   is
+   function obtenirChiffre (g : in Type_Grille; c : in Type_Coordonnee) 
+                              return Integer is
+
    begin
-      pragma Compile_Time_Warning
-        (Standard.True, "obtenirChiffre unimplemented");
-      return raise Program_Error with "Unimplemented function obtenirChiffre";
+         if g(obtenirLigne(c),obtenirColonne(c))=0 then
+            raise OBTENIR_CHIFFRE_NUL;
+         else
+            return g(obtenirLigne(c),obtenirColonne(c));
    end obtenirChiffre;
 
    --------------------
@@ -43,23 +45,32 @@ package body TAD_grilleSudoku is
    --------------------
 
    function nombreChiffres (g : in Type_Grille) return Integer is
+      c : Type_Coordonnee := (1,1);
+      cp := 0;
    begin
-      pragma Compile_Time_Warning
-        (Standard.True, "nombreChiffres unimplemented");
-      return raise Program_Error with "Unimplemented function nombreChiffres";
+       while obtenirLigne(c)<=9 loop
+           while obtenirColonne(c)<=9 loop
+               if caseVide(g,c)=false loop
+                   cp := cp =1;
+               end if;
+               obtenirColonne(c):=obtenirColonne+1;
+           end loop;
+           obtenirLigne(c):=obtenirLigne(c)+1;
+           obtenirColonne:=0;
+       end loop;
+       return cp;
    end nombreChiffres;
 
    ------------------
    -- fixerChiffre --
    ------------------
 
-   procedure fixerChiffre
-     (g : in out Type_Grille; c : in Type_Coordonnee; v : in Integer)
-   is
+   procedure fixerChiffre (g : in out Type_Grille; c : in Type_Coordonnee; v : in Integer) is
    begin
-      pragma Compile_Time_Warning
-        (Standard.True, "fixerChiffre unimplemented");
-      raise Program_Error with "Unimplemented procedure fixerChiffre";
+      if g(obtenirLigne(c),obtenirColonne(c))=0 then
+         raise FIXER_CHIFFRE_NON_NUL;
+      else
+         g(obtenirLigne(c),obtenirColonne(c)):=v;
    end fixerChiffre;
 
    ---------------
@@ -68,8 +79,10 @@ package body TAD_grilleSudoku is
 
    procedure viderCase (g : in out Type_Grille; c : in out Type_Coordonnee) is
    begin
-      pragma Compile_Time_Warning (Standard.True, "viderCase unimplemented");
-      raise Program_Error with "Unimplemented procedure viderCase";
+      if g(obtenirLigne(c),obtenirColonne(c))=0 then
+         raise VIDER_CASE_VIDE;
+      else
+         g(obtenirLigne(c),obtenirColonne(c)):=0;
    end viderCase;
 
    ----------------
@@ -78,23 +91,23 @@ package body TAD_grilleSudoku is
 
    function estRemplie (g : in Type_Grille) return Boolean is
    begin
-      pragma Compile_Time_Warning (Standard.True, "estRemplie unimplemented");
-      return raise Program_Error with "Unimplemented function estRemplie";
+      if nombreChiffres(g) = 81 then
+         return true;
+      else
+         return false;
    end estRemplie;
 
    ------------------------------
    -- obtenirChiffresDUneLigne --
    ------------------------------
 
-   function obtenirChiffresDUneLigne
-     (g : in Type_Grille; numLigne : in Integer) return Type_Ensemble
-   is
+   function obtenirChiffresDUneLigne (g : in Type_Grille; numLigne : in Integer) 
+                                       return Type_Ensemble is
    begin
-      pragma Compile_Time_Warning
-        (Standard.True, "obtenirChiffresDUneLigne unimplemented");
-      return
-        raise Program_Error
-          with "Unimplemented function obtenirChiffresDUneLigne";
+      for i in 1 .. 9 loop
+         if g(numLigne, i) = 
+         
+      end loop;
    end obtenirChiffresDUneLigne;
 
    --------------------------------

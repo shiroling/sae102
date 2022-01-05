@@ -8,6 +8,7 @@ package body TAD_ensemble is
     function construireEnsemble return Type_Ensemble is
         e: Type_Ensemble;
         begin
+
             for i in 1 .. 9 loop
                 e(i) := 0;
             end loop; 
@@ -24,9 +25,9 @@ package body TAD_ensemble is
         
         begin
             i:= 1;
-            while i < 10 AND estPlein loop
-                if e(1) = 1 then
-                    estPlein := False;
+            for i in 1 .. 9 loop
+                if e = False then
+                    estPlein := False
                 end if;
             end loop;
             return estPlein;
