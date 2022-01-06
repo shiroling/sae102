@@ -1,4 +1,8 @@
 pragma Ada_2012;
+
+
+with Ada.Text_IO;         use Ada.Text_IO;
+with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 package body TAD_grilleSudoku is
 
    ----------------------
@@ -33,8 +37,7 @@ package body TAD_grilleSudoku is
    --------------------
 
    function obtenirChiffre (g : in Type_Grille; c : in Type_Coordonnee)
-                              return Integer is
-
+                            return Integer is
    begin
          if g(obtenirLigne(c),obtenirColonne(c))=0 then
             raise OBTENIR_CHIFFRE_NUL;
@@ -71,7 +74,7 @@ package body TAD_grilleSudoku is
 
    procedure fixerChiffre (g : in out Type_Grille; c : in Type_Coordonnee; v : in Integer) is
    begin
-      if g(obtenirLigne(c),obtenirColonne(c))=0 then
+      if g(obtenirLigne(c),obtenirColonne(c))/=0 then
          raise FIXER_CHIFFRE_NON_NUL;
       else
          g(obtenirLigne(c),obtenirColonne(c)):=v;
@@ -107,13 +110,15 @@ package body TAD_grilleSudoku is
    ------------------------------
    -- obtenirChiffresDUneLigne --
    ------------------------------
-
+   --obtenirChiffre (g : in Type_Grille; c : in Type_Coordonnee)
    function obtenirChiffresDUneLigne (g : in Type_Grille; numLigne : in Integer)
                                       return Type_Ensemble is
       e : Type_Ensemble;
    begin
+      e := construireEnsemble;
+
       for i in 1 .. 9 loop
-         if g(numLigne, i) /= 0 then
+         if not caseVide(g, construireCoordonnees(numLigne, i)) then
             ajouterChiffre(e, g(numLigne, i));
          end if;
       end loop;
@@ -124,17 +129,17 @@ package body TAD_grilleSudoku is
    -- obtenirChiffresDUneColonne --
    --------------------------------
 
-   function obtenirChiffresDUneColonne
-     (g : in Type_Grille; numColonne : in Integer) return Type_Ensemble is
+   function obtenirChiffresDUneColonne(g : in Type_Grille; numColonne : in Integer) return Type_Ensemble is
       e : Type_Ensemble;
    begin
-         for i in 1 .. 9 loop
-            if g(i, numColonne) /= 0 then
-               ajouterChiffre(e, g(i, numColonne));
-            end if;
+      e:= construireEnsemble;
+      for i in 1 .. 9 loop
+         if not caseVide(g, construireCoordonnees(i, numColonne)) then
+            ajouterChiffre(e, g(i, numColonne));
+         end if;
       end loop;
       return e;
-      end obtenirChiffresDUneColonne;
+   end obtenirChiffresDUneColonne;
 
    -----------------------------
    -- obtenirChiffresDUnCarre --
@@ -144,11 +149,13 @@ package body TAD_grilleSudoku is
       cord: Type_Coordonnee;
       e : Type_Ensemble;
    begin
+      e:= construireEnsemble;
       cord := obtenirCoordonneeCarre(numCarre);
       for i in 0 .. 2 loop
          for j in 0 .. 2 loop
-            if g(i + obtenirLigne(cord), j + obtenirColonne(cord)) /= 0 then
-               ajouterChiffre(e, g(i, numCarre));
+            if not caseVide(g, construireCoordonnees(
+                            i + obtenirLigne(cord), j + obtenirColonne(cord))) then
+               ajouterChiffre(e, g(i + obtenirLigne(cord), j + obtenirColonne(cord)));
             end if;
          end loop;
       end loop;

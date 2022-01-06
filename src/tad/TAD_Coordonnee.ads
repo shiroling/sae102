@@ -16,7 +16,7 @@ package TAD_Coordonnee is
    -- retourne le numero du carre dans lequel se trouve la coordonnee c
    function obtenirCarre (c : Type_Coordonnee) return Integer;
 
-   -- retourne les coordonnees en haut a droite du carre numCarre
+   -- retourne les coordonnees en haut a gauche du carre numCarre
    function obtenirCoordonneeCarre (numCarre : Integer) return Type_Coordonnee;
 
 private

@@ -1,5 +1,5 @@
 pragma Ada_2012;
-package body TAD_ensemble is
+Package body TAD_ensemble is
 
     ------------------------
     -- construireEnsemble --
@@ -8,10 +8,9 @@ package body TAD_ensemble is
     function construireEnsemble return Type_Ensemble is
         e: Type_Ensemble;
         begin
-
             for i in 1 .. 9 loop
-                e(i) := 0;
-            end loop; 
+                e(i) := true;
+            end loop;
             return e;
         end construireEnsemble;
 
@@ -21,14 +20,15 @@ package body TAD_ensemble is
 
     function ensembleVide (e : in Type_Ensemble) return Boolean is
         estPlein : Boolean := True;
-        i: Integer; 
-        
+        i: Integer;
+
         begin
             i:= 1;
-            for i in 1 .. 9 loop
-                if e = False then
-                    estPlein := False
-                end if;
+            while i < 10 AND estPlein loop
+                if e(i) = false then
+            estPlein := False;
+         end if;
+         i:=i+1;
             end loop;
             return estPlein;
         end ensembleVide;
@@ -40,7 +40,7 @@ package body TAD_ensemble is
     function appartientChiffre
     (e : in Type_Ensemble; v : Integer) return Boolean is
         begin
-            return e(v);
+            return not e(v);
         end appartientChiffre;
 
     --------------------
@@ -48,10 +48,10 @@ package body TAD_ensemble is
     --------------------
 
     function nombreChiffres (e : in Type_Ensemble) return Integer is
-        nbElement: Integer:= 0; 
+        nbElement: Integer:= 0;
         begin
             for i in 1 .. 9 loop
-                if e(i) = 1 then
+                if e(i) = false then
                     nbElement := nbElement + 1;
                 end if;
             end loop;
@@ -63,8 +63,12 @@ package body TAD_ensemble is
     --------------------
 
     procedure ajouterChiffre (e : in out Type_Ensemble; v : in Integer) is
-        begin
-            e(v) := 1;
+   begin
+      if appartientChiffre(e, v) then
+         raise APPARTIENT_ENSEMBLE;
+      else
+         e(v) := false;
+      end if;
         end ajouterChiffre;
 
     --------------------
@@ -72,8 +76,12 @@ package body TAD_ensemble is
     --------------------
 
     procedure retirerChiffre (e : in out Type_Ensemble; v : in Integer) is
-        begin
-            e(v) := 0;
+   begin
+      if not appartientChiffre(e, v) then
+         raise NON_APPARTIENT_ENSEMBLE;
+      else
+         e(v) := true;
+      end if;
         end retirerChiffre;
 
 end TAD_ensemble;

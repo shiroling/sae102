@@ -1,5 +1,3 @@
-
-pragma Ada_2012;
 package body TAD_Coordonnee is
 
    ---------------------------
@@ -7,14 +5,12 @@ package body TAD_Coordonnee is
    ---------------------------
 
    function construireCoordonnees
-     (ligne : Integer; colonne : Integer) return Type_Coordonnee
-   is
+     (ligne : Integer; colonne : Integer) return Type_Coordonnee is
+      c : Type_Coordonnee;
    begin
-      pragma Compile_Time_Warning
-        (Standard.True, "construireCoordonnees unimplemented");
-      return
-        raise Program_Error
-          with "Unimplemented function construireCoordonnees";
+      c.ligne := ligne;
+      c.colonne := colonne;
+      return c;
    end construireCoordonnees;
 
    ------------------
@@ -23,9 +19,7 @@ package body TAD_Coordonnee is
 
    function obtenirLigne (c : Type_Coordonnee) return Integer is
    begin
-      pragma Compile_Time_Warning
-        (Standard.True, "obtenirLigne unimplemented");
-      return raise Program_Error with "Unimplemented function obtenirLigne";
+      return c.ligne;
    end obtenirLigne;
 
    --------------------
@@ -34,9 +28,7 @@ package body TAD_Coordonnee is
 
    function obtenirColonne (c : Type_Coordonnee) return Integer is
    begin
-      pragma Compile_Time_Warning
-        (Standard.True, "obtenirColonne unimplemented");
-      return raise Program_Error with "Unimplemented function obtenirColonne";
+      return c.colonne;
    end obtenirColonne;
 
    ------------------
@@ -45,9 +37,7 @@ package body TAD_Coordonnee is
 
    function obtenirCarre (c : Type_Coordonnee) return Integer is
    begin
-      pragma Compile_Time_Warning
-        (Standard.True, "obtenirCarre unimplemented");
-      return raise Program_Error with "Unimplemented function obtenirCarre";
+      return (3*((c.ligne-1)/3)) + ((c.colonne-1)/3 +1);
    end obtenirCarre;
 
    ----------------------------
@@ -56,12 +46,44 @@ package body TAD_Coordonnee is
 
    function obtenirCoordonneeCarre (numCarre : Integer) return Type_Coordonnee
    is
+      c : Type_Coordonnee;
    begin
-      pragma Compile_Time_Warning
-        (Standard.True, "obtenirCoordonneeCarre unimplemented");
-      return
-        raise Program_Error
-          with "Unimplemented function obtenirCoordonneeCarre";
+      if numCarre=1 then
+         c.ligne := 1;
+         c.colonne := 1;
+      else if numCarre=2 then
+            c.ligne := 1;
+            c.colonne := 4;
+         else if numCarre=3 then
+               c.ligne := 1;
+               c.colonne := 7;
+            else if numCarre=4 then
+                  c.ligne := 4;
+                  c.colonne := 1;
+               else if numCarre=5 then
+                     c.ligne := 4;
+                     c.colonne := 4;
+                  else if numCarre=6 then
+                        c.ligne := 4;
+                        c.colonne := 7;
+                     else if numCarre=7 then
+                           c.ligne := 7;
+                           c.colonne := 1;
+                        else if numCarre=8 then
+                              c.ligne := 7;
+                              c.colonne := 4;
+                           else
+                              c.ligne := 7;
+                              c.colonne := 7;
+                           end if;
+                        end if;
+                     end if;
+                  end if;
+               end if;
+            end if;
+         end if;
+      end if;
+      return c;
    end obtenirCoordonneeCarre;
 
 end TAD_Coordonnee;

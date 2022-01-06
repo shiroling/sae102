@@ -98,7 +98,7 @@ package body tests_TAD_Grille is
    end test_Grille_P5;
 
    -- creation grille
-   -- verification colonnes vides
+   -- verification carrés vides
    function test_Grille_P6 return Boolean is
       g     : Type_Grille;
       carre : Type_Ensemble;

@@ -1,0 +1,6 @@
+
+*.o
+*.xml
+*.stderr
+*.stdout
+*.ali
