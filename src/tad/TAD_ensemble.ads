@@ -2,7 +2,7 @@ package TAD_ensemble is
 
    APPARTIENT_ENSEMBLE : exception;
    NON_APPARTIENT_ENSEMBLE : exception;
-
+   ENSEMBLE_VIDE : exception;
    type Type_Ensemble is private;
 
    -- retourne un ensemble vide
@@ -18,6 +18,10 @@ package TAD_ensemble is
    -- retourne le nombre d'elements de l'ensemble e
    function nombreChiffres (e : in Type_Ensemble) return Integer;
 
+
+   -- Retoure les premier chiffre contenu dans l ensemble
+   function premierChiffre (e : in Type_Ensemble) return Integer;
+
    -- ajoute le chiffre v dans l'ensemble e
    -- nécessite l'element v n'existe pas dans l'ensemble e
    -- lève l'exception APPARTIENT_ENSEMBLE si v appartient à l'ensemble
@@ -27,6 +31,7 @@ package TAD_ensemble is
    -- nécessite l'element v existe dans l'ensemble e
    -- lève l'exception NON_APPARTIENT_ENSEMBLE si v n'appartient pas à l'ensemble
    procedure retirerChiffre (e : in out Type_Ensemble; v : in Integer);
+
 
 private
    type Type_Ensemble is array (1 .. 9) of Boolean;

@@ -42,10 +42,12 @@ package resolutions is
    function rechercherSolutionUniqueDansEnsemble
      (resultats : in Type_Ensemble) return Integer;
 
+  -- permet d'obtentir le nombre se soutions possbles pour une case donnée
+  function masseCase(g: in Type_Grille; c: in Type_Coordonnee) return Integer;
 
 
-  -- retourne les coordonnees de la premiére case avec le moins de solution possibles d'une grille g
-   function touverCaseLegere (g: in Type_Grille) return Type_Coordonnee;
+  -- retourne les coordonnees de la remiére case avec le moins de solution possibles d'une grille g
+   function trouverCaseLegere (g: in Type_Grille) return Type_Coordonnee;
 
 
    -- si la solution a ete trouve pour la grille g, alors Trouve est a VRAI et
@@ -58,6 +60,5 @@ package resolutions is
    --fonction type récursive.
    --condition de sortie, Aucune mise à jour de la grille.
    procedure parcourt (g: in out Type_Grille);
-
 
 end resolutions;

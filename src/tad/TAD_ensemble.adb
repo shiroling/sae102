@@ -76,12 +76,29 @@ Package body TAD_ensemble is
     --------------------
 
     procedure retirerChiffre (e : in out Type_Ensemble; v : in Integer) is
-   begin
+    begin
       if not appartientChiffre(e, v) then
          raise NON_APPARTIENT_ENSEMBLE;
       else
          e(v) := true;
       end if;
         end retirerChiffre;
+    --------------------
+    -- premierChiffre --
+    --------------------        
+    function premierChiffre (e : in Type_Ensemble) return Integer is
+    begin
+        if ensembleVide(e) then
+            raise ENSEMBLE_VIDE;
+        end if;
+
+        for i in 1..9 loop
+            if appartientChiffre(e, i) then
+                return i;
+            end if;
+        end loop;
+
+        raise NON_APPARTIENT_ENSEMBLE;
+   end premierChiffre;
 
 end TAD_ensemble;

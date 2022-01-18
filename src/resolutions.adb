@@ -58,17 +58,17 @@ package body resolutions is
    -- obtenirSolutionsPossibles --
    -------------------------------
 
-    function obtenirSolutionsPossibles(g : in Type_Grille; c : in Type_Coordonnee)
-                                       return Type_Ensemble is
+    function obtenirSolutionsPossibles(g : in Type_Grille; c : in Type_Coordonnee) return Type_Ensemble is
     ens: Type_Ensemble:= construireEnsemble;
     begin
-        if caseVide(g, c) then
+        if not caseVide(g, c) then
             raise CASE_NON_VIDE;
         end if;
-        
         for i in 1 .. 9 loop
-            if estChiffreValable(g, i, c) then
-                ajouterChiffre(ens, i);
+            if estChiffrePlaceable(g, i, c) then
+                if not appartientChiffre(ens, i) then
+                    ajouterChiffre(ens, i);
+                end if;
             end if;
         end loop;
         
@@ -96,7 +96,21 @@ package body resolutions is
         return 0;
     end rechercherSolutionUniqueDansEnsemble;
 
-    function touverCaseLegere (g: in Type_Grille) return Type_Coordonnee is 
+
+    function masseCase(g: in Type_Grille; c: in Type_Coordonnee) return Integer is 
+    nb: Integer;
+    ens: Type_Ensemble;
+    begin 
+        if not caseVide(g, c) then
+            raise CASE_NON_VIDE;
+        end if;
+        ens:= obtenirSolutionsPossibles(g, c);        
+        nb:= nombreChiffres(ens);
+        return nb;
+    end masseCase;
+
+
+    function trouverCaseLegere (g: in Type_Grille) return Type_Coordonnee is 
     c: Type_Coordonnee;
     coRecherche: Type_Coordonnee;
     poid: Integer := 10;
@@ -105,23 +119,28 @@ package body resolutions is
     for i in 1..9 loop
         for j in 1..9 loop
             coRecherche:=construireCoordonnees(i, j);
-            temp:= nombreChiffres( obtenirSolutionsPossibles(g, coRecherche));
-            if temp < poid then
-                c:= coRecherche;
-                poid:= temp;
+            if caseVide(g, coRecherche) then
+                temp:= masseCase(g, coRecherche);
+                if temp < poid then
+                    c:= coRecherche;
+                    poid:= temp;
+                end if;
             end if;
         end loop;
     end loop;
-
-
-    put("trouvé case plus légére de masse: "); put(poid);
     return c;
-    end touverCaseLegere;
+    end trouverCaseLegere;
+
+
    ------------------------------------------
    -- rechercherSolutionUniqueDansEnsemble --
    ------------------------------------------
     procedure parcourt (g: in out Type_Grille) is
     reroll: Boolean:= FALSE;
+    masse, possibleValeure : Integer;
+    cos: Type_Coordonnee;
+    ensPossibles: Type_Ensemble;
+    grilleBis: Type_Grille;
     begin
 
         for v in 1..9 loop
@@ -140,20 +159,49 @@ package body resolutions is
 
         if reroll then
             parcourt(g);
+
+        elsif not estRemplie(g) then
+            cos:= trouverCaseLegere(g);
+            masse:= masseCase(g, cos);
+
+            if masse = 1 then
+                fixerChiffre(g, cos, rechercherSolutionUniqueDansEnsemble(obtenirSolutionsPossibles(g, cos)));
+                parcourt(g);
+
+            elsif masse > 1 then
+                ensPossibles:= construireEnsemble;
+                ensPossibles:= obtenirSolutionsPossibles(g, cos);
+
+                for i in 1..masse loop
+                    possibleValeure:= premierChiffre (ensPossibles);
+                    grilleBis:= g;
+
+
+
+                    retirerChiffre (ensPossibles, possibleValeure);
+                    fixerChiffre(g, cos, possibleValeure);
+
+                    parcourt(g);
+
+                    if estRemplie(g) then
+                        return;
+                    end if;
+
+                    g:= grilleBis;
+                end loop;
+            end if;
+        
         end if;
     end parcourt;
+
+
    --------------------
    -- resoudreSudoku --
    --------------------
     procedure resoudreSudoku (g : out Type_Grille; trouve : out Boolean) is
-    co: Type_Coordonnee;
     begin
         parcourt(g);
-        trouve:= estRemplie(g);
-        if not trouve then
-            afficherGrille(g);
-            co:= touverCaseLegere(g);
-        end if;
+        trouve:= estRemplie(g);       
     end resoudreSudoku;
 
 end resolutions;
